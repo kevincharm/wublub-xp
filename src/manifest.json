@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "wublub-xp",
+    "version": "1.0.0",
+    "permissions": [],
+    "content_scripts": [
+        {
+            "matches": [
+                "*://weblab.tudelft.nl/*"
+            ],
+            "js": [
+                "content-script.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "browser_action": {
+        "default_title": "Wublub XP",
+        "default_popup": "popup.html"
+    },
+    "web_accessible_resources": [
+        "inject.js"
+    ]
+}
