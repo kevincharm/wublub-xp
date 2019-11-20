@@ -13,5 +13,4 @@ function inject() {
     const script = document.createElement('script')
     script.src = browser.extension.getURL('/inject.js')
     document.body.appendChild(script)
-    // script.remove()
 }
