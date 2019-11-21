@@ -2,9 +2,82 @@
 <html>
 
 <head>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat');
+        @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono');
+
+        html,
+        body {
+            background-color: #fad46b;
+            color: #364348;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            border-bottom-style: dotted;
+            border-bottom-width: 1px;
+        }
+
+        button {
+            cursor: pointer;
+            display: inline-block;
+            background-color: #02baf3;
+            color: #ffffff;
+            padding: 12px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            border-bottom-width: 6px;
+            border-bottom-style: solid;
+            border-bottom-color: #009dce;
+        }
+
+        button:hover {
+            color: #e1eef4;
+        }
+
+        button:active {
+            margin-top: 3px;
+            border-bottom-width: 3px;
+        }
+
+        .headline {
+            text-align: center;
+        }
+
+        .headline>* {
+            position: relative;
+        }
+
+        .headline>h1 {
+            font-weight: 400;
+            font-size: 18px;
+        }
+
+        .paypal>a {
+            display: inline-block;
+            background-color: #02baf3;
+            color: #ffffff;
+            padding: 15px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            border-bottom-width: 6px;
+            border-bottom-style: solid;
+            border-bottom-color: #009dce;
+        }
+
+        .paypal>a:hover {
+            color: #e1eef4;
+        }
+    </style>
+    <script src="./popup.js"></script>
 </head>
 
 <body>
+    <div class="headline">
+        <h1>Wublub XP</h1>
+    </div>
+    <button id="toggle">Enable</button>
 </body>
 
 </html>

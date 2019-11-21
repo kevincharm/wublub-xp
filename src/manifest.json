@@ -2,14 +2,13 @@
     "manifest_version": 2,
     "name": "wublub-xp",
     "version": "1.0.0",
-    "permissions": [],
+    "permissions": ["storage"],
     "content_scripts": [
         {
             "matches": [
                 "*://weblab.tudelft.nl/*"
             ],
             "js": [
-                "browser-polyfill.js",
                 "content-script.js"
             ],
             "run_at": "document_start"

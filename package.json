@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "yarn parcel build src/manifest.json --no-content-hash",
+    "watch": "yarn parcel watch src/manifest.json",
     "clean": "rm -rf ./dist",
     "firefox": "web-ext run -s ./dist",
     "zip": "web-ext build -s ./dist",
@@ -14,8 +15,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-web-extension": "^1.5.2",
-    "web-ext": "^3.2.1"
+    "web-ext": "^3.2.1",
+    "webextension-polyfill": "^0.5.0"
   }
 }
