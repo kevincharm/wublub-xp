@@ -1,3 +1,4 @@
+import { error } from './logger'
 import { getWublubState, setWublubState } from './storage'
 const browser = require('webextension-polyfill')
 

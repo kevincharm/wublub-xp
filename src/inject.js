@@ -7,6 +7,10 @@ log('Inject script loaded.')
 
 window.addEventListener('message', event => {
     const msg = event.data
+    if (!msg) {
+        return
+    }
+
     switch (msg.kind) {
         case 'wublub-xp-enable':
             stopModeRetries()
@@ -18,6 +22,13 @@ window.addEventListener('message', event => {
             break
     }
 })
+
+window.postMessage(
+    {
+        kind: 'wublub-xp-request-state'
+    },
+    '*'
+)
 
 function loadCppMode() {
     log('Loading ace/mode/c_cpp...')

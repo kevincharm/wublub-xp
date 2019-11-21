@@ -1,4 +1,5 @@
 import { getWublubState } from './storage'
+import log from './logger'
 const browser = require('webextension-polyfill')
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -7,14 +8,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         return
     }
 
-    console.log('[wublub-xp] Loaded content script.')
+    log('Loaded content script.')
 
     inject()
+    await sendState()
+})
+
+async function sendState() {
     const isEnabled = await getWublubState()
     if (isEnabled) {
         window.postMessage({ kind: 'wublub-xp-enable' })
     } else {
         window.postMessage({ kind: 'wublub-xp-disable' })
+    }
+}
+
+window.addEventListener('message', async event => {
+    const message = event.data
+    if (!message) {
+        return
+    }
+
+    if (message.kind === 'wublub-xp-request-state') {
+        await sendState()
     }
 })
 
