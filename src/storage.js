@@ -1,7 +1,7 @@
 import log, { error } from './logger'
 const browser = require('webextension-polyfill')
 
-const LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED = 'wublub-xp-enabled'
+const LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED = 'wublub-xp-enabled-v2'
 
 export async function getWublubState() {
     const course = await getCourse()
@@ -11,11 +11,13 @@ export async function getWublubState() {
 
     const state = await browser.storage.local.get(LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED)
     return (
-        state && state[LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED] && state[LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED].includes(course)
+        state &&
+        state[LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED] &&
+        state[LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED].find((c) => c.course === course)
     )
 }
 
-export async function setWublubState(isEnabled) {
+export async function setWublubState(isEnabled, mode) {
     const course = await getCourse()
     if (!course) {
         error('Could not retrieve course!')
@@ -24,19 +26,19 @@ export async function setWublubState(isEnabled) {
     let state = await browser.storage.local.get(LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED)
     if (!state || !state[LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED]) {
         state = {
-            [LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED]: []
+            [LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED]: [],
         }
     }
 
     let courseArr = state[LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED]
     if (isEnabled && !courseArr.includes(course)) {
-        courseArr.push(course)
+        courseArr.push({ course, mode })
     } else {
-        courseArr = courseArr.filter(c => c !== course)
+        courseArr = courseArr.filter((c) => c.course !== course)
     }
 
     await browser.storage.local.set({
-        [LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED]: courseArr
+        [LOCAL_STORAGE_WUBLUB_XP_IS_ENABLED]: courseArr,
     })
 }
 
@@ -57,7 +59,7 @@ async function getCourse() {
     } else {
         location = new URL(window.location.href)
     }
-    const dirs = location.pathname.split('/').filter(d => d)
+    const dirs = location.pathname.split('/').filter((d) => d)
     if (!dirs.length) {
         return null
     }

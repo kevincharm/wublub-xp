@@ -5,7 +5,7 @@ const heuristicIds = ['Solution', 'Test']
 
 log('Inject script loaded.')
 
-window.addEventListener('message', event => {
+window.addEventListener('message', (event) => {
     const msg = event.data
     if (!msg) {
         return
@@ -14,7 +14,7 @@ window.addEventListener('message', event => {
     switch (msg.kind) {
         case 'wublub-xp-enable':
             stopModeRetries()
-            retryMode(loadCppMode)
+            retryMode(() => loadMode(msg.mode))
             break
         case 'wublub-xp-disable':
             stopModeRetries()
@@ -25,13 +25,13 @@ window.addEventListener('message', event => {
 
 window.postMessage(
     {
-        kind: 'wublub-xp-request-state'
+        kind: 'wublub-xp-request-state',
     },
     '*'
 )
 
-function loadCppMode() {
-    log('Loading ace/mode/c_cpp...')
+function loadMode(mode) {
+    log(`Loading mode: ${mode}...`)
 
     for (const heuristicId of heuristicIds) {
         const editorId = document.querySelector(editorSelector(heuristicId)).id
@@ -42,8 +42,8 @@ function loadCppMode() {
         }
 
         editor.session.setMode({
-            path: 'ace/mode/c_cpp',
-            v: Date.now()
+            path: `ace/mode/${mode}`,
+            v: Date.now(),
         })
     }
 }
@@ -69,7 +69,7 @@ function stopModeRetries() {
 }
 function retryMode(fn) {
     // check if it's a page with editors
-    const isEditPage = !!heuristicIds.map(id => document.querySelector(editorSelector(id))).filter(e => e).length
+    const isEditPage = !!heuristicIds.map((id) => document.querySelector(editorSelector(id))).filter((e) => e).length
     if (!isEditPage) {
         log('No editors on this page...')
         return

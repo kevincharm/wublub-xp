@@ -4,25 +4,28 @@ const browser = require('webextension-polyfill')
 
 document.addEventListener('DOMContentLoaded', async () => {
     const button = document.querySelector('#toggle')
-    const isEnabled = await getWublubState()
-    if (isEnabled) {
+    const select = document.querySelector('#mode')
+
+    const state = await getWublubState()
+    if (state) {
         button.textContent = 'Disable'
     }
 
     button.addEventListener('click', async () => {
         const isEnabled = !!(await getWublubState())
+        const mode = select.options[select.selectedIndex].value
         if (isEnabled) {
             sendDisable()
         } else {
-            sendEnable()
+            sendEnable(mode)
         }
-        await setWublubState(!isEnabled)
+        await setWublubState(!isEnabled, mode)
         button.textContent = isEnabled ? 'Enable' : 'Disable'
     })
 })
 
-async function sendEnable() {
-    await sendMessage({ kind: 'wublub-xp-enable' })
+async function sendEnable(mode) {
+    await sendMessage({ kind: 'wublub-xp-enable', mode })
 }
 
 async function sendDisable() {

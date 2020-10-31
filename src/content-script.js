@@ -15,15 +15,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 async function sendState() {
-    const isEnabled = await getWublubState()
-    if (isEnabled) {
-        window.postMessage({ kind: 'wublub-xp-enable' })
+    const state = await getWublubState()
+    if (state) {
+        window.postMessage({ kind: 'wublub-xp-enable', mode: state.mode })
     } else {
         window.postMessage({ kind: 'wublub-xp-disable' })
     }
 }
 
-window.addEventListener('message', async event => {
+window.addEventListener('message', async (event) => {
     const message = event.data
     if (!message) {
         return
@@ -35,7 +35,7 @@ window.addEventListener('message', async event => {
 })
 
 // relay messages to injected script
-browser.runtime.onMessage.addListener(message => {
+browser.runtime.onMessage.addListener((message) => {
     window.postMessage(message, '*')
 })
 
